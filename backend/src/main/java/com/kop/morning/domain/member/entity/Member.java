@@ -10,10 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -27,12 +25,13 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "nickname")
+    private String nickname;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
     @CreatedDate
@@ -41,15 +40,20 @@ public class Member implements UserDetails {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private String provider;
+    private String providerId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
     }
 
     @Override

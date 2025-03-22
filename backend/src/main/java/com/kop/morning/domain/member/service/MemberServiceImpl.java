@@ -3,6 +3,7 @@ package com.kop.morning.domain.member.service;
 import com.kop.morning.domain.member.dto.requestDto.SignInRequestDto;
 import com.kop.morning.domain.member.dto.requestDto.SignUpRequestDto;
 import com.kop.morning.domain.member.entity.Member;
+import com.kop.morning.domain.member.entity.Role;
 import com.kop.morning.domain.member.repository.MemberRepository;
 import com.kop.morning.global.token.dto.JwtToken;
 import com.kop.morning.global.token.dto.TokenProvider;
@@ -40,9 +41,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void signUp(SignUpRequestDto requestDto) {
         Member member = Member.builder()
-                .username(requestDto.getUsername())
+                .nickname(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .email(requestDto.getEmail())
+                .role(Role.USER)
                 .build();
 
         memberRepository.save(member);
