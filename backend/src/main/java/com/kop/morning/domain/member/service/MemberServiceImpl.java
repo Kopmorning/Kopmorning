@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public JwtToken signIn(SignInRequestDto requestDto) {
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             return tokenProvider.generateToken(authentication);
         } catch (Exception e) {
@@ -41,9 +41,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void signUp(SignUpRequestDto requestDto) {
         Member member = Member.builder()
-                .nickname(requestDto.getEmail())
+                .username(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .email(requestDto.getEmail())
+                .nickname(requestDto.getNickname())
+                .provider("form")
+                .providerId("form")
                 .role(Role.USER)
                 .build();
 

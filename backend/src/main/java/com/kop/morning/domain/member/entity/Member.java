@@ -25,13 +25,13 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "nickname")
-    private String nickname;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    private String nickname;
     private String email;
 
     @CreatedDate
