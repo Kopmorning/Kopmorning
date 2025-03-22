@@ -5,6 +5,7 @@ import com.kop.morning.domain.member.dto.requestDto.SignUpRequestDto;
 import com.kop.morning.domain.member.entity.Member;
 import com.kop.morning.domain.member.entity.Role;
 import com.kop.morning.domain.member.repository.MemberRepository;
+import com.kop.morning.global.Utils.CookieUtil;
 import com.kop.morning.global.token.dto.JwtToken;
 import com.kop.morning.global.token.dto.TokenProvider;
 import jakarta.transaction.Transactional;
@@ -25,13 +26,18 @@ public class MemberServiceImpl implements MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final CookieUtil util;
 
     @Override
-    public JwtToken signIn(SignInRequestDto requestDto) {
+    public void signIn(SignInRequestDto requestDto) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            return tokenProvider.generateToken(authentication);
+            JwtToken jwtToken = tokenProvider.generateToken(authentication);
+
+            util.addCookie("accessToken", jwtToken.getAccessToken());
+            util.addCookie("refreshToken", jwtToken.getRefreshToken());
+
         } catch (Exception e) {
             log.error("🚨 authenticationManager.authenticate() 예외 발생!", e);
             throw e;

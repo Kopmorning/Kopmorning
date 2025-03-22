@@ -1,6 +1,7 @@
 package com.kop.morning.global.config;
 
 import com.kop.morning.auth.service.CustomOAuth2UserDetailService;
+import com.kop.morning.auth.service.OAuth2AuthenticationSuccessHandler;
 import com.kop.morning.global.token.dto.JwtAuthenticationFilter;
 import com.kop.morning.global.token.dto.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final CustomOAuth2UserDetailService customOAuth2UserDetailService;
+    private final OAuth2AuthenticationSuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,10 +40,9 @@ public class SecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers(
                                         "/api/v1/member/signUp",
-                                        "/api/v1/member/login",
-                                        "/",
-                                        "/login/oauth2/code/google").permitAll()
-                                .anyRequest().authenticated()
+                                        "/api/v1/member/login").permitAll()
+                                .anyRequest().permitAll()
+//                                .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults()) // CORS 설정
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
@@ -50,7 +51,9 @@ public class SecurityConfig {
                 })
                 .oauth2Login(oauth2Configurer -> oauth2Configurer
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(customOAuth2UserDetailService)))
+                                .userService(customOAuth2UserDetailService))
+                        .successHandler(successHandler)
+                )
                 // JWT 인증을 위한 필터 추가 (UsernamePasswordAuthenticationFilter 전에 실행)
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
