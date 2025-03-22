@@ -4,7 +4,16 @@ spring:
     username: ${DB.username}
     password: ${DB.password}
     url: ${DB.url}
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE.clientId}
+            client-secret: ${GOOGLE.secretKey}
+            scope: # google API의 범위 값
+              - profile
+              - email
   jpa:
     hibernate:
       ddl-auto: create
@@ -20,3 +29,5 @@ spring:
   config:
     import:
       - "classpath:application-secret.yml"
+jwt:
+  secret: ${JWT.secretKey}
