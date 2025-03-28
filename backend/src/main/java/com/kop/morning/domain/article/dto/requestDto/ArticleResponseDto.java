@@ -1,4 +1,4 @@
-package com.kop.morning.domain.article.dto;
+package com.kop.morning.domain.article.dto.requestDto;
 
 import com.kop.morning.domain.article.entity.Article;
 import lombok.Data;

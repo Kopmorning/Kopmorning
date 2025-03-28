@@ -3,9 +3,9 @@ package com.kop.morning.domain.member.controller;
 import com.kop.morning.domain.member.dto.requestDto.SignInRequestDto;
 import com.kop.morning.domain.member.dto.requestDto.SignUpRequestDto;
 import com.kop.morning.domain.member.service.MemberService;
+import com.kop.morning.global.token.dto.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping("/login")
-    public ResponseEntity<?> signIn(@RequestBody SignInRequestDto requestDto) {
-        memberService.signIn(requestDto);
-        return ResponseEntity.ok().build();
+    @PostMapping("/login")
+    public ResponseEntity<JwtToken> signIn(@RequestBody SignInRequestDto requestDto) {
+        return ResponseEntity.ok(memberService.signIn(requestDto));
     }
 
     @PostMapping("/signUp")

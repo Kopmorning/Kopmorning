@@ -32,6 +32,8 @@ public class Member implements UserDetails {
     private String password;
 
     private String nickname;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @CreatedDate
@@ -53,7 +55,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 
     @Override
