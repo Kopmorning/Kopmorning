@@ -1,6 +1,6 @@
-package com.kop.morning.domain.article.dto.requestDto;
+package com.kop.morning.domain.article.article.dto.requestDto;
 
-import com.kop.morning.domain.article.entity.Article;
+import com.kop.morning.domain.article.article.entity.Article;
 import lombok.Data;
 
 @Data

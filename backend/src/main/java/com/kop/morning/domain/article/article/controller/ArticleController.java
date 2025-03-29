@@ -1,9 +1,9 @@
-package com.kop.morning.domain.article.controller;
+package com.kop.morning.domain.article.article.controller;
 
-import com.kop.morning.domain.article.dto.requestDto.ArticleUpdateRequestDto;
-import com.kop.morning.domain.article.dto.responseDto.ArticleRequestDto;
-import com.kop.morning.domain.article.dto.requestDto.ArticleResponseDto;
-import com.kop.morning.domain.article.service.ArticleService;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleRequestDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleResponseDto;
+import com.kop.morning.domain.article.article.controller.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

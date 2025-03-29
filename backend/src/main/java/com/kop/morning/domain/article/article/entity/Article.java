@@ -1,7 +1,7 @@
-package com.kop.morning.domain.article.entity;
+package com.kop.morning.domain.article.article.entity;
 
-import com.kop.morning.domain.article.dto.requestDto.ArticleUpdateRequestDto;
-import com.kop.morning.domain.article.dto.responseDto.ArticleRequestDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleRequestDto;
 import com.kop.morning.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
