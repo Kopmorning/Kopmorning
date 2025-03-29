@@ -1,8 +1,8 @@
 package com.kop.morning.domain.article.article.service;
 
-import com.kop.morning.domain.article.article.dto.requestDto.ArticleResponseDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleResponseDto;
 import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
-import com.kop.morning.domain.article.article.dto.responseDto.ArticleRequestDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleRequestDto;
 import com.kop.morning.domain.article.article.entity.Article;
 import com.kop.morning.domain.article.article.repository.ArticleRepository;
 import com.kop.morning.domain.member.entity.Member;
