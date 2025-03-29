@@ -51,4 +51,8 @@ public class Comment {
         this.article = article;
         this.comment = requestDto.getComment();
     }
+
+    public void update(String comment) {
+        this.comment = comment;
+    }
 }
