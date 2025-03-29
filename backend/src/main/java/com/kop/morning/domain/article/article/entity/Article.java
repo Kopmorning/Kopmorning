@@ -42,6 +42,9 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 열거형으로 처리하면 좋을 듯
+    private String category;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -54,6 +57,7 @@ public class Article {
     public Article(ArticleRequestDto articleRequestDto, Member member) {
         this.title = articleRequestDto.getTitle();
         this.content = articleRequestDto.getContent();
+        this.category = articleRequestDto.getCategory();
         this.member = member;
     }
 

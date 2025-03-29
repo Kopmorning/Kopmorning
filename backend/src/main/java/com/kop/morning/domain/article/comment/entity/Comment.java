@@ -30,7 +30,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String content;
+    private String comment;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -49,6 +49,6 @@ public class Comment {
     public Comment(CommentRequestDto requestDto, Member member, Article article) {
         this.member = member;
         this.article = article;
-        this.content = requestDto.getComment();
+        this.comment = requestDto.getComment();
     }
 }
