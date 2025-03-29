@@ -32,8 +32,10 @@ public class CommentController {
     }
 
     @PatchMapping
-    public ResponseEntity<String> updateComment(@RequestBody CommentUpdateRequestDto requestDto) {
-        commentService.update(requestDto);
+    public ResponseEntity<String> updateComment(
+            @RequestBody CommentUpdateRequestDto requestDto,
+            @RequestParam(name = "commentId") Long commentId) {
+        commentService.update(requestDto, commentId);
         return ResponseEntity.ok("Comment updated");
     }
 }

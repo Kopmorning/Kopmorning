@@ -40,9 +40,9 @@ public class CommentService {
     }
 
     @Transactional
-    public void update(CommentUpdateRequestDto requestDto) {
+    public void update(CommentUpdateRequestDto requestDto, Long commentId) {
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentMemberEmail());
-        Comment comment = commentRepository.findById(requestDto.getCommentId())
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
         if (!comment.getMember().equals(member)) {
             throw new RuntimeException("댓글에 대한 권한이 없습니다.");

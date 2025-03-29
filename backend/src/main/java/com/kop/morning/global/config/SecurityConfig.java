@@ -39,11 +39,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers(
-                                        "/api/v1/member/**").permitAll()
+                                .requestMatchers("/api/v1/member/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/article/**").permitAll()
                                 .requestMatchers(HttpMethod.PATCH).authenticated()
-                                .anyRequest().permitAll()
-//                                .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults()) // CORS 설정
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화

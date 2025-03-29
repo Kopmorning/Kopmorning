@@ -10,12 +10,14 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
     private Long id;
     private String comment;
+    private int likeCount;
     private MemberResponseDto member;
     private LocalDateTime createdAt;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
+        this.likeCount = comment.getCommentLikes().size();
         this.member = new MemberResponseDto(comment.getMember());
         this.createdAt = comment.getCreatedAt();
     }
