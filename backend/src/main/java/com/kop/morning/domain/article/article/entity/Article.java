@@ -7,6 +7,8 @@ import com.kop.morning.domain.member.entity.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,8 +44,8 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    // 열거형으로 처리하면 좋을 듯
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -60,7 +62,7 @@ public class Article {
     public Article(ArticleRequestDto articleRequestDto, Member member) {
         this.title = articleRequestDto.getTitle();
         this.content = articleRequestDto.getContent();
-        this.category = articleRequestDto.getCategory();
+        this.category = Category.valueOf(articleRequestDto.getCategory());
         this.member = member;
     }
 
