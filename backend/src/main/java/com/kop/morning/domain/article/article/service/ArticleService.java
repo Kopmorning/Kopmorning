@@ -1,4 +1,4 @@
-package com.kop.morning.domain.article.article.controller.service;
+package com.kop.morning.domain.article.article.service;
 
 import com.kop.morning.domain.article.article.dto.requestDto.ArticleResponseDto;
 import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
