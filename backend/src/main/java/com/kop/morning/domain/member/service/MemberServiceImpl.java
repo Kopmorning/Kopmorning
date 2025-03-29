@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     private final CookieUtil util;
 
     @Override
-    public void signIn(SignInRequestDto requestDto) {
+    public JwtToken signIn(SignInRequestDto requestDto) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -38,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
             util.addCookie("accessToken", jwtToken.getAccessToken());
             util.addCookie("refreshToken", jwtToken.getRefreshToken());
 
+            return jwtToken;
         } catch (Exception e) {
             log.error("🚨 authenticationManager.authenticate() 예외 발생!", e);
             throw e;

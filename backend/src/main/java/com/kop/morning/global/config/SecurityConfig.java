@@ -7,6 +7,7 @@ import com.kop.morning.global.token.dto.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,8 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers(
-                                        "/api/v1/member/signUp",
-                                        "/api/v1/member/login").permitAll()
+                                        "/api/v1/member/**").permitAll()
+                                .requestMatchers(HttpMethod.PATCH).authenticated()
                                 .anyRequest().permitAll()
 //                                .anyRequest().authenticated()
                 )
