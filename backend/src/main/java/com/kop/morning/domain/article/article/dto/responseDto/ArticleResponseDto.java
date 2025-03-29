@@ -14,6 +14,7 @@ public class ArticleResponseDto {
     private Long id;
     private String title;
     private String content;
+    private int likeCount;
     private LocalDateTime createdAt;
     private MemberResponseDto member;
     private List<CommentResponseDto> comments;
@@ -22,6 +23,7 @@ public class ArticleResponseDto {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
+        this.likeCount = article.getArticleLikes().size();
         this.createdAt = article.getCreatedAt();
         this.member = new MemberResponseDto(article.getMember());
         this.comments = article.getComments().stream()

@@ -27,13 +27,8 @@ public class CommentLikeService {
             commentLikeRepository.deleteById(commentLike.getId());
             return "comment like delete";
         } else {
-            CommentLike newCommentLike = new CommentLike(comment, member);
-            commentLikeRepository.save(newCommentLike);
+            commentLikeRepository.save(new CommentLike(comment, member));
             return "comment like create";
         }
-    }
-
-    public int getLikeCount(Long commentId) {
-        return commentLikeRepository.findByCommentId(commentId);
     }
 }

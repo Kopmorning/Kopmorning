@@ -54,6 +54,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleLike> articleLikes = new ArrayList<>();
+
     public Article(ArticleRequestDto articleRequestDto, Member member) {
         this.title = articleRequestDto.getTitle();
         this.content = articleRequestDto.getContent();

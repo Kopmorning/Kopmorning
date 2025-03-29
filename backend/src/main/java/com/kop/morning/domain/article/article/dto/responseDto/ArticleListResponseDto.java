@@ -8,11 +8,13 @@ import lombok.Data;
 public class ArticleListResponseDto {
     private Long id;
     private String title;
+    private int likeCount;
     private MemberResponseDto member;
 
     public ArticleListResponseDto(Article article) {
         this.id = article.getId();
         this.title = article.getTitle();
+        this.likeCount = article.getArticleLikes().size();
         this.member = new MemberResponseDto(article.getMember());
     }
 }
