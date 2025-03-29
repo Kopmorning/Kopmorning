@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class TokenProvider {
+    private static final String AUTHORITIES_KEY = "auth";
+    private static final String BEARER_TYPE = "Bearer";
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final Key key;
 
     // application.yml에서 secret 값 가져와서 key에 저장
@@ -40,22 +44,22 @@ public class TokenProvider {
         long now = (new Date()).getTime();
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("auth", authorities)
+                .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         return JwtToken.builder()
-                .grantType("Bearer")
+                .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -66,12 +70,12 @@ public class TokenProvider {
             // Jwt 토큰 복호화
             Claims claims = parseClaims(accessToken);
 
-            if (claims.get("auth") == null) {
+            if (claims.get(AUTHORITIES_KEY) == null) {
                 throw new RuntimeException("권한 정보가 없는 토큰입니다.");
             }
 
             // 클레임에서 권한 정보 가져오기
-            Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+            Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 

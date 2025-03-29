@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -21,7 +22,6 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
-    private final SecurityUtil securityUtil;
 
     public List<ArticleResponseDto> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
@@ -38,23 +38,33 @@ public class ArticleService {
     }
 
     public void save(ArticleRequestDto articleRequestDto) {
-        Long memberId = securityUtil.getCurrentMember();
-
         // 예외처리 리펙토링
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentMemberEmail());
         Article article = new Article(articleRequestDto, member);
         articleRepository.save(article);
     }
 
-    public void delete(Long id) {
-        articleRepository.deleteById(id);
+    public void delete(Long articleId) {
+        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentMemberEmail());
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new RuntimeException("Article not found"));
+
+        if(!Objects.equals(member.getId(), article.getMember().getId())) {
+            throw new RuntimeException("게시물에 권한이 없습니다.");
+        }
+
+        articleRepository.deleteById(articleId);
     }
 
     @Transactional
     public void update(ArticleUpdateRequestDto requestDto, Long articleId) {
+        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentMemberEmail());
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
+
+        if(!Objects.equals(member.getId(), article.getMember().getId())) {
+            throw new RuntimeException("게시물에 권한이 없습니다.");
+        }
 
         article.update(requestDto);
     }
