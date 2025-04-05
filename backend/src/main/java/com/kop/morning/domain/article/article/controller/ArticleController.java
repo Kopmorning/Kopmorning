@@ -1,9 +1,10 @@
-package com.kop.morning.domain.article.controller;
+package com.kop.morning.domain.article.article.controller;
 
-import com.kop.morning.domain.article.dto.requestDto.ArticleUpdateRequestDto;
-import com.kop.morning.domain.article.dto.responseDto.ArticleRequestDto;
-import com.kop.morning.domain.article.dto.requestDto.ArticleResponseDto;
-import com.kop.morning.domain.article.service.ArticleService;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleRequestDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleListResponseDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleResponseDto;
+import com.kop.morning.domain.article.article.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +26,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping
-    public ResponseEntity<List<ArticleResponseDto>> getAllArticles() {
+    public ResponseEntity<List<ArticleListResponseDto>> getAllArticles() {
         return ResponseEntity.ok(articleService.getAllArticles());
     }
 

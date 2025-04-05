@@ -1,10 +1,11 @@
-package com.kop.morning.domain.article.service;
+package com.kop.morning.domain.article.article.service;
 
-import com.kop.morning.domain.article.dto.requestDto.ArticleResponseDto;
-import com.kop.morning.domain.article.dto.requestDto.ArticleUpdateRequestDto;
-import com.kop.morning.domain.article.dto.responseDto.ArticleRequestDto;
-import com.kop.morning.domain.article.entity.Article;
-import com.kop.morning.domain.article.repository.ArticleRepository;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleListResponseDto;
+import com.kop.morning.domain.article.article.dto.responseDto.ArticleResponseDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleUpdateRequestDto;
+import com.kop.morning.domain.article.article.dto.requestDto.ArticleRequestDto;
+import com.kop.morning.domain.article.article.entity.Article;
+import com.kop.morning.domain.article.article.repository.ArticleRepository;
 import com.kop.morning.domain.member.entity.Member;
 import com.kop.morning.domain.member.repository.MemberRepository;
 import com.kop.morning.global.Utils.SecurityUtil;
@@ -23,10 +24,11 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
-    public List<ArticleResponseDto> getAllArticles() {
+    // 다건 조회
+    public List<ArticleListResponseDto> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
         return articles.stream()
-                .map(ArticleResponseDto::new)
+                .map(ArticleListResponseDto::new)
                 .toList();
     }
 
