@@ -1,6 +1,7 @@
 package com.kop.morning.domain.football.controller;
 
-import com.kop.morning.domain.football.dto.responseDto.StandingResponseDto;
+import com.kop.morning.domain.football.dto.standingDto.StandingResponseDto;
+import com.kop.morning.domain.football.dto.teamDto.TeamInfoDto;
 import com.kop.morning.domain.football.service.FootBallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,10 @@ public class FootBallApiController {
     @GetMapping("/standing/{leagueId}")
     public ResponseEntity<StandingResponseDto> getStanding(@PathVariable(name = "leagueId") int leagueId) {
         return ResponseEntity.ok(footBallService.getStanding(leagueId));
+    }
+
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<TeamInfoDto> getTeam(@PathVariable(name = "teamId") int teamId) {
+        return ResponseEntity.ok(footBallService.getTeamInfo(teamId));
     }
 }
