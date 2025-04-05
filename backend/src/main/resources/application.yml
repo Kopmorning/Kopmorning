@@ -31,3 +31,6 @@ spring:
       - "classpath:application-secret.yml"
 jwt:
   secret: ${JWT.secretKey}
+
+football:
+  apiToken: ${FOOTBALL-API.token}

@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/member/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/article/**").permitAll()
                                 .requestMatchers(HttpMethod.PATCH).authenticated()
-                                .anyRequest().authenticated()
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .cors(Customizer.withDefaults()) // CORS 설정
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
