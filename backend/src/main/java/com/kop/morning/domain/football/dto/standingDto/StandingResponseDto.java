@@ -1,6 +1,7 @@
 package com.kop.morning.domain.football.dto.standingDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kop.morning.domain.football.dto.CompetitionDto;
 import lombok.Data;
 
 import java.util.List;
@@ -38,15 +39,7 @@ public class StandingResponseDto {
         private int goalDifference;
     }
 
-    @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class CompetitionDto {
-        private Long id;
-        private String name;
-        private String code;
-        private String type;
-        private String emblem;
-    }
+
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)

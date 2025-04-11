@@ -2,8 +2,11 @@ package com.kop.morning.domain.football.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kop.morning.domain.football.dto.matchDto.MatchInfoDto;
 import com.kop.morning.domain.football.dto.standingDto.StandingResponseDto;
 import com.kop.morning.domain.football.dto.teamDto.TeamInfoDto;
+import com.kop.morning.domain.football.entity.MatchInfo;
+import com.kop.morning.domain.football.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,22 +24,23 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FootBallService {
-    @Value("${football.apiToken}")
-    private String apiToken;
-    private final String XAUTHTOKEN = "X-Auth-Token";
-    private final String STANDINGS = "standings";
-    private final String TABLE = "table";
-    private final String standingGetUrl = "http://api.football-data.org/v4/competitions/%d/standings";
-    private final String teamInfoGetUrl = "http://api.football-data.org/v4/teams/%d";
-
-    private final RestTemplate restTemplate = new RestTemplate();  // Optional: Bean으로 등록해도 됨
+    private final MatchRepository matchRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public StandingResponseDto getStanding(int leagueId) {
-        String url = String.format(standingGetUrl, leagueId);
+    @Value("${football.apiToken}")
+    private String apiToken;
 
+    private static final String XAUTHTOKEN = "X-Auth-Token";
+    private static final String STANDINGS = "standings";
+    private static final String TABLE = "table";
+    private static final String standingGetUrl = "http://api.football-data.org/v4/competitions/2021/standings";
+    private static final String teamInfoGetUrl = "http://api.football-data.org/v4/teams/%d";
+    private static final String matchListGetUrl = "http://api.football-data.org/v4/competitions/2021/matches";
+
+    public StandingResponseDto getStanding() {
         try {
-            JsonNode jsonNode = getJsonNode(url);
+            JsonNode jsonNode = getJsonResponse(standingGetUrl);
             JsonNode standings = jsonNode.path(STANDINGS);
 
             List<StandingResponseDto.TableDto> tableDto = objectMapper
@@ -56,7 +60,7 @@ public class FootBallService {
         String url = String.format(teamInfoGetUrl, teamId);
 
         try {
-            JsonNode jsonNode = getJsonNode(url);
+            JsonNode jsonNode = getJsonResponse(url);
 
             return objectMapper.treeToValue(jsonNode, TeamInfoDto.class);
         } catch (Exception e) {
@@ -64,7 +68,23 @@ public class FootBallService {
         }
     }
 
-    private JsonNode getJsonNode(String url) throws Exception {
+    public void saveMatchInfo() {
+        try{
+            JsonNode jsonNode = getJsonResponse(matchListGetUrl);
+            List<MatchInfoDto> matchInfoDto = objectMapper
+                    .readerForListOf(MatchInfoDto.class)
+                    .readValue(jsonNode.get("matches"));
+
+            for(MatchInfoDto match : matchInfoDto){
+                matchRepository.save(new MatchInfo(match));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private JsonNode getJsonResponse(String url) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.set(XAUTHTOKEN, apiToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
