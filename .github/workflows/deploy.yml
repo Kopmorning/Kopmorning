@@ -1,0 +1,40 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 push 될 때만 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          # 서버 작업 시작
+          cd ~/app  # 👉 EC2에 clone 해놓은 프로젝트 디렉토리로 이동
+          git pull origin main  # 코드 최신화
+          
+          # 빌드
+          ./gradlew clean build -x test
+          
+          # 도커 컨테이너 중지 및 삭제
+          docker stop -app || true
+          docker rm kopmorning-app || true
+          
+          # 도커 이미지 빌드
+          docker build -t kopmorning-app .
+          
+          # 새 컨테이너 실행
+          docker run -d -p 8080:8080 --name kopmorning-app kopmorning-app
+        EOF
