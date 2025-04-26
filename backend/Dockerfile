@@ -9,4 +9,4 @@ COPY ${JAR_FILE} kopmorning.jar
 EXPOSE 8080
 
 # 앱 실행
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/kopmorning.jar"]
