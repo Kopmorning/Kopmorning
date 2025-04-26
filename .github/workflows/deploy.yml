@@ -22,7 +22,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
           # 서버 작업 시작
-          cd ~/app  # 👉 EC2에 clone 해놓은 프로젝트 디렉토리로 이동
+          cd ~/kopmorning/app  # 👉 EC2에 clone 해놓은 프로젝트 디렉토리로 이동
           git pull origin main  # 코드 최신화
           
           # 빌드
