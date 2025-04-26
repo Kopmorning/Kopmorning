@@ -29,7 +29,7 @@ jobs:
           ./gradlew clean build -x test
           
           # 도커 컨테이너 중지 및 삭제
-          docker stop -app || true
+          docker stop kopmorning-app || true
           docker rm kopmorning-app || true
           
           # 도커 이미지 빌드
